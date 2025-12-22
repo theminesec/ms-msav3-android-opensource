@@ -2,15 +2,16 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("maven-publish")
 }
 
 android {
-    namespace = "com.example.msav3opensource"
+    namespace = "com.minesec.msav3opensource"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.msav3opensource"
-        minSdk = 28
+        applicationId = "com.minesec.msav3opensource"
+        minSdk = 30
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
@@ -27,6 +28,23 @@ android {
             )
         }
     }
+
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/license.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/notice.txt",
+                "META-INF/ASL2.0",
+                "META-INF/*.kotlin_module"
+            )
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -36,6 +54,21 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+
+    flavorDimensions += "client"
+
+    productFlavors {
+        create("clientA") {
+            dimension = "client"
+            applicationIdSuffix = ".clienta"
+            versionNameSuffix = "-clientA"
+        }
+        create("clientB") {
+            dimension = "client"
+            applicationIdSuffix = ".clientb"
+            versionNameSuffix = "-clientB"
+        }
     }
 }
 
@@ -56,4 +89,28 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.headless.mpoc)
+    implementation(libs.msa.core) {
+        exclude(group = "MultiplatformMSA", module = "msa-model")
+    }
+    implementation(libs.visa.sensory)
+    implementation(libs.mc.sensory)
+
+    implementation("io.insert-koin:koin-android:3.5.3")
+    implementation("io.insert-koin:koin-androidx-compose:3.5.3")
+    implementation("io.github.ismai117:kottie:2.1.0")
+    implementation("network.chaintech:compose-multiplatform-screen-capture:1.0.1")
+    val lottieVersion = "6.0.0"
+    implementation("com.airbnb.android:lottie-compose:$lottieVersion")
+
+    implementation("io.coil-kt.coil3:coil-compose:3.3.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.3.0")
+
+    // For QR codes
+    implementation("io.github.alexzhirkevich:qrose:1.0.1")
+    implementation("io.github.ismai117:kottie:2.1.0")
+    implementation(libs.easyqrscan)
+    implementation("androidx.activity:activity-compose:1.11.0") // includes BackHandler
+    implementation("io.github.suwasto:kmp-capturable-compose:0.1.1")
 }
