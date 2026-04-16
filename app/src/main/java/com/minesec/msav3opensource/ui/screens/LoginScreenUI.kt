@@ -48,8 +48,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.minesec.msav3opensource.ui.helper.template.BiometricDialog
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.BiometricDialog
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.theminesec.multiplatform.msa_core.feature.login.presentation.LoginAction
 import com.theminesec.multiplatform.msa_core.feature.login.presentation.LoginState
 import org.publicvalue.multiplatform.qrcode.CodeType
@@ -90,7 +90,7 @@ fun LoginScreenUI(
         showScannerWithQRCode = false
     }
 
-    if (state.showBioDialog) {
+    if (state.showBioScreen) {
         BiometricDialog(onConfirm = {
             triggerAction(LoginAction.EnableBiometric(true))
         }, onDismiss = {

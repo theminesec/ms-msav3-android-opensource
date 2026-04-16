@@ -91,8 +91,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(libs.headless.mpoc)
-    implementation(libs.msa.core) {
+    debugImplementation(libs.msa.core.stage) {
         exclude(group = "MultiplatformMSA", module = "msa-model")
+        exclude(group = "org.slf4j", module = "slf4j-simple")
+    }
+    releaseImplementation(libs.msa.core.prod) {
+        exclude(group = "MultiplatformMSA", module = "msa-model")
+        exclude(group = "org.slf4j", module = "slf4j-simple")
     }
     implementation(libs.visa.sensory)
     implementation(libs.mc.sensory)

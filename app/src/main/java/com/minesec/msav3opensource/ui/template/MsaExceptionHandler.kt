@@ -1,46 +1,71 @@
 package com.minesec.msav3opensource.ui.template
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.theminesec.multiplatform.msa_core.common.domain.models.MSAException
+import com.theminesec.multiplatform.msa_core.feature.home.presentation.ErrorState
 
 @Composable
 internal fun MsaExceptionHandler(
-    exception: MSAException,
+    errorState: ErrorState?,
     onFinish: (MSAException) -> Unit,
-    dialogVisible: Boolean = true,
     onRetryAction: () -> Unit = {}
 ) {
+    var currentException by remember { mutableStateOf<MSAException?>(null) }
+    var showDialog by remember { mutableStateOf(false) }
 
-    var dialogVisibleState by remember { mutableStateOf(dialogVisible) }
-    when (exception) {
+    LaunchedEffect(errorState?.id) {
+        if (errorState != null) {
+            currentException = errorState.exception
+            showDialog = true
+        } else {
+            showDialog = false
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            showDialog = false
+        }
+    }
+
+    val handleDismiss = {
+        showDialog = false
+        currentException?.let { onFinish(it) }
+        currentException = null
+    }
+
+    when (currentException) {
+        null -> {}
 
         is MSAException.NetworkError.Unauthorized -> {
-            ShowUnAuthorizedDialog(dialogVisibleState) {
-                dialogVisibleState = false
-                onFinish(exception)
-            }
+            ShowUnAuthorizedDialog(showDialog, onDismiss = handleDismiss)
         }
+
         is MSAException.Local.FeatureUnavailable -> {
             FeatureUnavailableDialog(
-                dialogVisibleState, "Unavailable", exception.errorMessage,
-                onDismiss = {
-                    onFinish(exception)
-                }
+                showDialog,
+                "Unavailable",
+                currentException!!.errorMessage,
+                onDismiss = handleDismiss
             )
         }
 
         else -> {
-            ShowAlertDialog(exception, dialogVisibleState, onRetry = {
-                onRetryAction()
-                dialogVisibleState = false
-            }) {
-                dialogVisibleState = false
-                onFinish(exception)
-            }
+            ShowAlertDialog(
+                currentException!!,
+                showDialog,
+                onRetry = {
+                    onRetryAction()
+                    handleDismiss()
+                },
+                onDismiss = handleDismiss
+            )
         }
     }
 }

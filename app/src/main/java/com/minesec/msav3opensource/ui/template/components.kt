@@ -1,12 +1,15 @@
 package com.minesec.msav3opensource.ui.template
 
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,6 +17,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -22,11 +26,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -37,14 +44,18 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -61,9 +72,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardCapitalization
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -73,7 +89,9 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import kotlinx.coroutines.delay
 import com.minesec.msav3opensource.R
+import com.minesec.msav3opensource.ui.helper.template.MSAConfirmCancelButtons
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.common.domain.models.MSAException
 
@@ -667,6 +685,553 @@ fun AnimatedCircularProgressWithLogo(
         }
     }
 
+}
+
+@Composable
+fun getDynamicFontSize(amountString: String): TextUnit {
+    val length = amountString.length
+
+    return when {
+        // Less than 5 characters (including decimal point if present) -> 40.sp
+        length <= 5 -> 40.sp
+        // Less than 8 characters -> 35.sp
+        length < 8 -> 35.sp
+        // 8 or more characters -> 30.sp
+        else -> 30.sp
+    }
+}
+
+@Composable
+fun AuthProgressBar(
+    progress: Int, // progress from ViewModel (0-100)
+    modifier: Modifier = Modifier,
+    onCompleted: (() -> Unit)? = null // optional callback when it reaches 100%
+) {
+    val animatedProgress by animateFloatAsState(
+        targetValue = progress / 100f,
+        animationSpec = tween(
+            durationMillis = 300,
+            easing = FastOutSlowInEasing
+        ),
+        label = "progress_animation"
+    )
+
+    LaunchedEffect(progress) {
+        if (progress >= 100) {
+            onCompleted?.invoke()
+        }
+    }
+
+    LinearProgressIndicator(
+        progress = { animatedProgress },
+        modifier = modifier
+            .fillMaxWidth()
+            .height(6.dp),
+        color = MsaTheme.colors.primary,
+        trackColor = Color.White.copy(alpha = 0.2f),
+        strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
+    )
+}
+
+@Composable
+fun PasscodeDialog(
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var passcode by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf<String?>(null) }
+    var passwordVisible by remember { mutableStateOf(false) }
+
+    val minLength = 4
+    val maxLength = 6
+    val titleText = stringResource(R.string.enter_merchant_passcode)
+    val dismissButtonText = stringResource(R.string.cancel_button)
+    val confirmButtonText = stringResource(R.string.confirm_button)
+
+    val actualTrailingIconResource: Int =
+        if (passwordVisible) R.drawable.show_password
+        else R.drawable.hide_password
+
+    val togglePasswordVisibilityText = "Toggle password visibility"
+    val enterPasscodePlaceholder = "Enter passcode (4-6 digits)"
+
+    val trailingIconComposable: @Composable (() -> Unit) = {
+        Image(
+            painter = painterResource(actualTrailingIconResource),
+            contentDescription = togglePasswordVisibilityText,
+            modifier = Modifier
+                .size(MsaTheme.iconSize.sm)
+                .clickable { passwordVisible = !passwordVisible },
+            colorFilter = ColorFilter.tint(MsaTheme.colors.mutedForeground)
+        )
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Column(
+            modifier = Modifier
+                .background(MsaTheme.colors.background, MsaTheme.shapes.medium)
+                .padding(vertical = MsaTheme.spacing.lg, horizontal = MsaTheme.spacing.md)
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(MsaTheme.spacing.md)
+        ) {
+            Text(
+                text = titleText,
+                style = MsaTheme.typography.titleMedium,
+                color = MsaTheme.colors.foreground,
+                modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.Start)
+            )
+
+            Spacer(modifier = Modifier.height(MsaTheme.spacing.xs))
+
+            OutlinedTextField(
+                value = passcode,
+                onValueChange = { input ->
+                    val digits = input.filter { it.isDigit() }
+                    if (digits.length <= maxLength) {
+                        passcode = digits
+                    }
+                },
+                placeholder = { Text(enterPasscodePlaceholder) },
+                singleLine = true,
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.NumberPassword
+                ),
+                visualTransformation = if (passwordVisible) VisualTransformation.None
+                else PasswordVisualTransformation(),
+                modifier = Modifier.fillMaxWidth(),
+                textStyle = MsaTheme.typography.bodySmall,
+                colors = TextFieldDefaults.colors(
+                    unfocusedTextColor = MsaTheme.colors.foreground,
+                    focusedTextColor = MsaTheme.colors.foreground,
+                    unfocusedIndicatorColor = MsaTheme.colors.input,
+                    unfocusedContainerColor = MsaTheme.colors.accent,
+                    focusedIndicatorColor = MsaTheme.colors.primary,
+                    focusedContainerColor = MsaTheme.colors.accent,
+                    cursorColor = MsaTheme.colors.primary,
+                ),
+                shape = MsaTheme.shapes.medium,
+                trailingIcon = trailingIconComposable
+            )
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.width(MsaTheme.spacing.xs))
+
+                error?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                } ?: Text(
+                    text = "${passcode.length} / $maxLength",
+                    style = MsaTheme.typography.labelSmall,
+                    color = MsaTheme.colors.mutedForeground,
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(MsaTheme.spacing.md)
+            ) {
+                Button(
+                    onClick = onDismiss,
+                    modifier = Modifier.weight(1f).height(MsaTheme.minTouchSize.sm),
+                    shape = MsaTheme.shapes.medium,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = MsaTheme.colors.primary,
+                    ),
+                    border = BorderStroke(1.dp, MsaTheme.colors.primary)
+                ) {
+                    Text(text = dismissButtonText, style = MsaTheme.typography.bodyLarge)
+                }
+
+                Button(
+                    onClick = {
+                        when {
+                            passcode.isBlank() -> {
+                                // Local UI validation can still show a quick message
+                            }
+
+                            passcode.length < minLength -> { /* ... */
+                            }
+
+                            passcode.length > maxLength -> { /* ... */
+                            }
+
+                            else -> onConfirm(passcode)
+                        }
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(MsaTheme.minTouchSize.sm),
+                    shape = MsaTheme.shapes.medium,
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(MsaTheme.minTouchSize.sm)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        MsaTheme.colors.primaryGradient,
+                                        MsaTheme.colors.primary
+                                    )
+                                ),
+                                shape = MsaTheme.shapes.medium
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = confirmButtonText,
+                            style = MsaTheme.typography.bodyLarge,
+                            color = MsaTheme.colors.primaryForeground
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun BiometricDialog(
+    onConfirm: () -> Unit, onDismiss: () -> Unit
+) {
+    val titleText = stringResource(R.string.enable_biometric_title)
+    val messageText = stringResource(R.string.enable_biometric_message)
+    val confirmButtonText = stringResource(R.string.enable)
+    val dismissButtonText = stringResource(R.string.not_now)
+
+    Dialog(onDismissRequest = onDismiss) {
+        Column(
+            modifier = Modifier
+                .background(MsaTheme.colors.background, MsaTheme.shapes.medium)
+                .padding(
+                    vertical = MsaTheme.spacing.lg,
+                    horizontal = MsaTheme.spacing.md
+                )
+                .fillMaxWidth()
+                .wrapContentHeight(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(MsaTheme.spacing.md)
+        ) {
+            Text(
+                text = titleText,
+                style = MsaTheme.typography.titleMedium,
+                color = MsaTheme.colors.foreground,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.Start)
+            )
+
+            Text(
+                text = messageText,
+                style = MsaTheme.typography.bodySmall,
+                color = MsaTheme.colors.mutedForeground,
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(MsaTheme.spacing.sm))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(MsaTheme.spacing.md)
+            ) {
+                Button(
+                    onClick = {
+                        onDismiss()
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(MsaTheme.minTouchSize.sm),
+                    shape = MsaTheme.shapes.medium,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        containerColor = Color.Transparent,
+                        contentColor = MsaTheme.colors.primary,
+                    ),
+                    border = BorderStroke(1.dp, MsaTheme.colors.primary)
+                ) {
+                    Text(
+                        text = dismissButtonText,
+                        style = MsaTheme.typography.bodyLarge
+                    )
+                }
+
+                // Confirm / Enable
+                Button(
+                    onClick = {
+                        onConfirm()
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(MsaTheme.minTouchSize.sm),
+                    shape = MsaTheme.shapes.medium,
+                    contentPadding = PaddingValues(0.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(MsaTheme.minTouchSize.sm)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = listOf(
+                                        MsaTheme.colors.primaryGradient,
+                                        MsaTheme.colors.primary
+                                    )
+                                ),
+                                shape = MsaTheme.shapes.medium
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = confirmButtonText,
+                            style = MsaTheme.typography.bodyLarge,
+                            color = MsaTheme.colors.primaryForeground
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun OriginalTransactionIdDialog(
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var transactionId by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf<String?>(null) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Original Transaction ID",
+                color = MsaTheme.colors.primary,
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = transactionId,
+                    onValueChange = {
+                        if (it.length <= 20) {
+                            transactionId = it.trim()
+                            error = null
+                        }
+                    },
+                    placeholder = { Text("Enter 20-char Transaction ID") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Ascii,
+                        capitalization = KeyboardCapitalization.None
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = error != null
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                if (error != null) {
+                    Text(
+                        text = error!!,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                } else {
+                    val length = transactionId.length
+                    Text(
+                        text = "$length / 20",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (length == 20)
+                            MsaTheme.colors.primary
+                        else
+                            MaterialTheme.colorScheme.outline
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            MSAConfirmCancelButtons(
+                confirmText = "Confirm",
+                cancelText = "Cancel",
+                onCancelClick = onDismiss,
+                onConfirmClick = {
+                    when {
+                        transactionId.isBlank() -> {
+                            error = "Transaction ID cannot be empty"
+                        }
+
+                        transactionId.length != 20 -> {
+                            error = "Transaction ID must be exactly 20 characters"
+                        }
+
+                        else -> {
+                            onConfirm(transactionId)
+                            onDismiss()
+                        }
+                    }
+                }
+            )
+        }
+    )
+}
+
+@Composable
+fun TransactionAuthCardVoidDialog(
+    onConfirm: (passcode: String, transactionId: String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var passcode by remember { mutableStateOf("") }
+    var transactionId by remember { mutableStateOf("") }
+    var error by remember { mutableStateOf<String?>(null) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Authentication Required",
+                color = MsaTheme.colors.primary,
+                style = MaterialTheme.typography.titleMedium
+            )
+        },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = passcode,
+                    onValueChange = {
+                        if (it.length <= 6) {
+                            passcode = it.filter { ch -> ch.isDigit() }
+                            error = null
+                        }
+                    },
+                    placeholder = { Text("Enter 6-digit passcode") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.NumberPassword
+                    ),
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "${passcode.length}/6 digits",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.outline
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                OutlinedTextField(
+                    value = transactionId,
+                    onValueChange = {
+                        if (it.length <= 20) {
+                            transactionId = it.trim()
+                            error = null
+                        }
+                    },
+                    placeholder = { Text("Enter 20-char Transaction ID") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Ascii,
+                        capitalization = KeyboardCapitalization.None
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "${transactionId.length}/20 characters",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.outline
+                )
+
+                error?.let {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            MSAConfirmCancelButtons(
+                confirmText = "Confirm",
+                cancelText = "Cancel",
+                onCancelClick = onDismiss,
+                onConfirmClick = {
+                    when {
+                        passcode.isBlank() -> error = "Passcode cannot be empty"
+                        passcode.length != 6 -> error = "Passcode must be exactly 6 digits"
+                        transactionId.isBlank() -> error = "Transaction ID cannot be empty"
+                        transactionId.length != 20 -> error =
+                            "Transaction ID must be exactly 20 characters"
+                        else -> {
+                            onConfirm(passcode, transactionId)
+                            onDismiss()
+                        }
+                    }
+                }
+            )
+        }
+    )
+}
+
+@Composable
+fun SettlementSuccessDialog(
+    showDialog: Boolean,
+    message: String,
+    onDismissRequest: () -> Unit
+) {
+    var internalVisible by remember(showDialog) { mutableStateOf(showDialog) }
+    if (!internalVisible) return
+
+    // Auto-dismiss after 1 second
+    LaunchedEffect(showDialog) {
+        if (showDialog) {
+            delay(1000L)
+            internalVisible = false
+            onDismissRequest()
+        }
+    }
+
+    Dialog(onDismissRequest = onDismissRequest) {
+        Card(
+            modifier = Modifier.padding(16.dp),
+            shape = RoundedCornerShape(8.dp),
+        ) {
+            Row(
+                modifier = Modifier
+                    .padding(20.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.success_icon),
+                    contentDescription = "Approved",
+                    modifier = Modifier.size(70.dp).padding(end = 12.dp)
+                )
+                Text(
+                    text = message,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
+        }
+    }
 }
 
 // Usage example

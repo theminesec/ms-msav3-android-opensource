@@ -1,6 +1,5 @@
 package com.minesec.msav3opensource.ui.helper.template
 
-
 import adaptiveSpacingHeight
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,6 +21,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,6 +30,7 @@ import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -59,9 +61,36 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.minesec.msav3opensource.R
 import com.minesec.msav3opensource.ui.models.BottomNavTab
+import com.minesec.msav3opensource.ui.template.getDynamicFontSize
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.common.domain.models.MSAException
 import com.theminesec.multiplatform.msa_core.util.amount.DisplayAmountFormat
+
+@Composable
+fun MSAConfirmCancelButtons(
+    confirmText: String,
+    cancelText: String,
+    onConfirmClick: () -> Unit,
+    onCancelClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        OutlinedButton(
+            onClick = onCancelClick,
+            modifier = Modifier.weight(1f)
+        ) { Text(cancelText) }
+        Button(
+            onClick = onConfirmClick,
+            modifier = Modifier.weight(1f),
+            colors = ButtonDefaults.buttonColors(containerColor = MsaTheme.colors.primary)
+        ) { Text(confirmText) }
+    }
+}
+
+
 
 @Composable
 fun PaymentCardInfo(

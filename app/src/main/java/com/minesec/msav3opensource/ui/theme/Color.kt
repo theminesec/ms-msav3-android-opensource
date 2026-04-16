@@ -24,7 +24,62 @@ interface MsaColors {
     val input: Color
     val ring: Color
     val statusYellow: Color
+    val processing: Color
+    val headerSurface: Color
+    val headerForeground: Color
 }
+
+@Immutable
+data class MsaColorsLight(
+    override val primary: Color = Color(0xFF4F46E5), // Indigo-600
+    override val primaryForeground: Color = Color(0xFFF1F4F9),
+    override val primaryGradient: Color = Color(0xFF6366F1), // Indigo-500
+    override val secondary: Color = Color(0xFF1E1B4B), // Indigo-950
+    override val secondaryForeground: Color = Color(0xFFEEF2FF),
+    override val background: Color = Color(0xFFFFFFFF),
+    override val foreground: Color = Color(0xFF0F172A),
+    override val muted: Color = Color(0xFFE2E8F0),
+    override val mutedForeground: Color = Color(0xFF64748B),
+    override val accent: Color = Color(0xFFF1F5F9),
+    override val accentForeground: Color = Color(0xFF334155),
+    override val approval: Color = Color(0xFF10B981), // Emerald-500
+    override val approvalForeground: Color = Color(0xFFF0FDF4),
+    override val error: Color = Color(0xFFEF4444), // Red-500
+    override val errorForeground: Color = Color(0xFFFEF2F2),
+    override val highlightCard: Color = Color(0xFFEEF2FF), // Indigo-50
+    override val input: Color = Color(0xFF94A3B8),
+    override val ring: Color = Color(0xFFCBD5E1),
+    override val statusYellow: Color = Color(0xFFF59E0B),
+    override val processing: Color = Color(0xFF3B82F6), // Blue-500
+    override val headerSurface: Color = Color(0xFF4F46E5), // Indigo-600
+    override val headerForeground: Color = Color(0xFFFFFFFF)
+) : MsaColors
+
+@Immutable
+data class MsaColorsDark(
+    override val primary: Color = Color(0xFF818CF8), // Indigo-400
+    override val primaryForeground: Color = Color(0xFFF1F4F9),
+    override val primaryGradient: Color = Color(0xFFA5B4FC), // Indigo-300
+    override val secondary: Color = Color(0xFF312E81), // Indigo-900
+    override val secondaryForeground: Color = Color(0xFFEEF2FF),
+    override val background: Color = Color(0xFF0F172A), // Slate-900
+    override val foreground: Color = Color(0xFFF8FAFC),
+    override val muted: Color = Color(0xFF1E293B),
+    override val mutedForeground: Color = Color(0xFF94A3B8),
+    override val accent: Color = Color(0xFF334155),
+    override val accentForeground: Color = Color(0xFFCBD5E1),
+    override val approval: Color = Color(0xFF34D399), // Emerald-400
+    override val approvalForeground: Color = Color(0xFFF0FDF4),
+    override val error: Color = Color(0xFFF87171), // Red-400
+    override val errorForeground: Color = Color(0xFFFEF2F2),
+    override val highlightCard: Color = Color(0x66312E81),
+    override val input: Color = Color(0xFF94A3B8),
+    override val ring: Color = Color(0xFF475569),
+    override val statusYellow: Color = Color(0xFFFBBF24),
+    override val processing: Color = Color(0xFF60A5FA), // Blue-400
+    override val headerSurface: Color = Color(0xFF1E1B4B), // Indigo-950
+    override val headerForeground: Color = Color(0xFFFFFFFF)
+): MsaColors
 
 @Immutable
 data class SchemeColors(

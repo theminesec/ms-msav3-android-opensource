@@ -61,7 +61,7 @@ interface Radius {
 private fun Int.adaptive(): Dp {
     val windowSize = LocalWindowSize.current
     return when (windowSize.width) {
-        WindowWidthSize.Compact -> this.dp
+        WindowWidthSize.Compact, WindowWidthSize.SubCompact -> this.dp
         WindowWidthSize.Medium -> this.dp * 1.2f
         WindowWidthSize.Expanded -> this.dp * 1.4f
     }

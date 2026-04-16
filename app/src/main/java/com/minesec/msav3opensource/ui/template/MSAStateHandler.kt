@@ -10,14 +10,16 @@ import androidx.compose.ui.res.stringResource
 import com.minesec.msav3opensource.R
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.common.domain.models.MSAException
+import com.theminesec.multiplatform.msa_core.feature.home.presentation.ErrorState
 
 @Composable
 internal fun MsaUiStateHandler(
     isLoading: Boolean = false,
-    exception: MSAException? = null,
+    errorState: ErrorState? = null,
     noDataFound: Boolean = false,
-    onFinish: (MSAException) -> Unit = {},
-    screenContent: @Composable () -> Unit,
+    statusMessage: String = "",
+    onExceptionHandled: (MSAException) -> Unit = {},
+    screenContent: @Composable (() -> Unit),
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         screenContent()
@@ -37,12 +39,8 @@ internal fun MsaUiStateHandler(
         if (isLoading) AnimatedCircularProgressWithLogo()
 
         // Optional: Handle exceptions
-        exception?.let {
-            MsaExceptionHandler(it, onFinish) {
-                // retry action clicked....
-                // TODO: look here ... how we can do that ??  \
-            }
+        MsaExceptionHandler(errorState, onExceptionHandled) {
+            // retry action clicked....
         }
     }
 }
-

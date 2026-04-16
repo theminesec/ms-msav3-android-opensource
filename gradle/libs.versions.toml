@@ -8,9 +8,9 @@ espressoCore = "3.7.0"
 lifecycleRuntimeKtx = "2.9.4"
 activityCompose = "1.11.0"
 composeBom = "2025.09.01"
-msaCore = "1.0.4"
+msaCore = "1.1.0"
 easyqrscan = "0.5.0"
-headlessMpoc = "2.0.14"
+headlessMpoc = "2.0.24.1"
 visaSensory = "2.2"
 mcSensory = "1.4.0"
 
@@ -29,7 +29,8 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
-msa-core = { group = "com.theminesec.multiplatform", name = "msa-core-android", version.ref = "msaCore" }
+msa-core-stage = { group = "com.theminesec.multiplatform", name = "msa-core-stage-android", version.ref = "msaCore" }
+msa-core-prod = { group = "com.theminesec.multiplatform", name = "msa-core-android", version.ref = "msaCore" }
 easyqrscan = { module = "io.github.kalinjul.easyqrscan:scanner", version.ref = "easyqrscan" }
 headless-mpoc = { module = "com.theminesec.sdk:headless-mpoc-stage", version.ref = "headlessMpoc" }
 visa-sensory = { module = "com.theminesec.utils:visa-sensory-branding", version.ref = "visaSensory" }

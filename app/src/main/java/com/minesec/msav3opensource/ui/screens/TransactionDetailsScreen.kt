@@ -53,11 +53,11 @@ import com.minesec.msav3opensource.ui.helper.items.MSAIconButton
 import com.minesec.msav3opensource.ui.helper.items.MSATextFieldDialog
 import com.minesec.msav3opensource.ui.helper.items.PartialAmountWithPassCodeDialog
 import com.minesec.msav3opensource.ui.helper.items.ShareReceiptQrDialog
-import com.minesec.msav3opensource.ui.helper.template.FeatureUnavailableDialog
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
-import com.minesec.msav3opensource.ui.helper.template.PasscodeDialog
+import com.minesec.msav3opensource.ui.template.FeatureUnavailableDialog
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.PasscodeDialog
 import com.minesec.msav3opensource.ui.helper.template.PaymentCardInfo
-import com.minesec.msav3opensource.ui.helper.template.SettlementSuccessDialog
+import com.minesec.msav3opensource.ui.template.SettlementSuccessDialog
 import com.minesec.msav3opensource.ui.helper.template.TransactionDetailItem
 import com.minesec.msav3opensource.ui.helper.utils.copyTextToClipboard
 import com.minesec.msav3opensource.ui.models.capitalizeFirstChar
