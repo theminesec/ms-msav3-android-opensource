@@ -37,11 +37,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.minesec.msav3opensource.R
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.minesec.msav3opensource.ui.models.capitalizeFirstChar
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.common.domain.models.MSAException
-import com.theminesec.multiplatform.msa_core.feature.common.data.models.CardTransactionRequest
+import com.theminesec.multiplatform.msa_core.feature.common.data.models.request.CardTransactionRequest
 import com.theminesec.multiplatform.msa_core.feature.common.data.models.TransactionType
 import com.theminesec.multiplatform.msa_core.feature.common.data.models.TransactionType.REFUND
 import com.theminesec.multiplatform.msa_core.feature.common.domain.models.enums.PaymentMethod

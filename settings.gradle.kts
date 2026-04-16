@@ -55,17 +55,6 @@ dependencyResolutionManagement {
             }
         }
     }
-    repositories {
-        google {
-            mavenLocal()
-            mavenContent {
-                includeGroupAndSubgroups("androidx")
-                includeGroupAndSubgroups("com.android")
-                includeGroupAndSubgroups("com.google")
-            }
-        }
-        mavenCentral()
-    }
 }
 
 rootProject.name = "MSAV3Opensource"

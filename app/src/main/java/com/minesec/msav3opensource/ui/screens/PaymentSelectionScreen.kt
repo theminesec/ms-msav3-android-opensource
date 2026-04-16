@@ -43,14 +43,14 @@ import androidx.compose.ui.unit.dp
 import com.minesec.msav3opensource.R
 import com.minesec.msav3opensource.ui.helper.items.MSACard
 import com.minesec.msav3opensource.ui.helper.template.AmountDisplay
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.minesec.msav3opensource.ui.models.CardTab
 import com.minesec.msav3opensource.ui.models.getPaymentSchemaIconRes
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.app.navigation.LocalWindowSize
 import com.theminesec.multiplatform.msa_core.app.navigation.WindowWidthSize
-import com.theminesec.multiplatform.msa_core.feature.cardTapping.paymentSelectionScreen.presentation.PaymentSelectionAction
-import com.theminesec.multiplatform.msa_core.feature.cardTapping.paymentSelectionScreen.presentation.PaymentSelectionState
+import com.theminesec.multiplatform.msa_core.feature.cardTapping.paymentSelection.presentation.PaymentSelectionAction
+import com.theminesec.multiplatform.msa_core.feature.cardTapping.paymentSelection.presentation.PaymentSelectionState
 import com.theminesec.multiplatform.msa_core.feature.common.domain.models.enums.PaymentMethod
 
 @Composable
@@ -123,10 +123,10 @@ fun PaymentSelectionScree(
 //                    color = MsaTheme.colors.primary
 //                )
                 AmountDisplay(
-                    currency = state.paymentSelectionArg?.deviceInfo?.currency ?: "",
-                    amount = state.paymentSelectionArg?.amount ?: ""
+                    currency = state.currency,
+                    amount = state.amount
                 )
-                if (state.paymentSelectionArg?.descriptionNote?.isNotEmpty() == true) {
+                if (state.descriptionNote.isNotEmpty()) {
                     Row {
                         Image(
                             painter = painterResource(R.drawable.circle_add),
@@ -136,7 +136,7 @@ fun PaymentSelectionScree(
                         )
                         Spacer(Modifier.width(MsaTheme.spacing.xs))
                         Text(
-                            text = state.paymentSelectionArg?.descriptionNote ?: "",
+                            text = state.descriptionNote,
                             style = MsaTheme.typography.bodyMedium,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
@@ -179,36 +179,7 @@ fun PaymentSelectionScree(
                 )
 
 
-                if (selectedTab == CardTab.MERCHANT_QR) {
-                    Spacer(Modifier.height(MsaTheme.spacing.md))
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        if (state.paymentQRSupported.isEmpty()) {
-                            Text(
-                                text = "No payment methods supported yet",
-                                style = MsaTheme.typography.labelMedium,
-                                color = MsaTheme.colors.mutedForeground,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = MsaTheme.spacing.lg),
-                                textAlign = TextAlign.Center
-                            )
-                        } else {
-                            PaymentMethodsList(
-                                state.paymentQRSupported,
-                                onPaymentMethodClick = { method ->
-                                    triggerAction(
-                                        PaymentSelectionAction.PaymentMethodSelected(
-                                            method
-                                        )
-                                    )
-                                }
-                            )
-                        }
-                    }
-                }
+                // Merchant QR payment methods are now handled in PaymentQRSelectionScreen
             }
 
 

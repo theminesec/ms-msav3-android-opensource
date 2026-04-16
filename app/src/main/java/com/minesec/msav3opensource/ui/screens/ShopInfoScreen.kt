@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minesec.msav3opensource.R
 import com.minesec.msav3opensource.ui.helper.template.KeyValueRow
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.feature.settings.presenation.SettingsAction
 import com.theminesec.multiplatform.msa_core.feature.settings.presenation.SettingsState

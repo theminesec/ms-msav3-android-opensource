@@ -43,8 +43,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.minesec.msav3opensource.R
 import com.minesec.msav3opensource.ui.helper.items.MSAButton
 import com.minesec.msav3opensource.ui.helper.items.MSATextFieldDialog
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
-import com.minesec.msav3opensource.ui.helper.template.getDynamicFontSize
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.getDynamicFontSize
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.app.navigation.LocalWindowSize
 import com.theminesec.multiplatform.msa_core.app.navigation.WindowHeightSize

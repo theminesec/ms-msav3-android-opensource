@@ -45,7 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.minesec.msav3opensource.R
 import com.minesec.msav3opensource.ui.helper.items.BatchSummaryCard
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.feature.common.domain.models.enums.SettleStatus
 import com.theminesec.multiplatform.msa_core.feature.common.domain.models.enums.SettleStatus.CREATED

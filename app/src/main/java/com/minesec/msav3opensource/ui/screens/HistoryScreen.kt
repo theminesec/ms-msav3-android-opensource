@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.minesec.msav3opensource.ui.models.capitalizeFirstChar
 import com.minesec.msav3opensource.ui.models.getPaymentSchemaIconRes
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.theminesec.multiplatform.msa_core.feature.common.data.models.TransactionType
 import com.theminesec.multiplatform.msa_core.feature.common.domain.models.enums.PaymentMethod
 import com.theminesec.multiplatform.msa_core.feature.common.domain.models.enums.SettleStatus
@@ -59,7 +59,7 @@ import com.theminesec.multiplatform.msa_core.feature.history.presentation.Histor
 import com.theminesec.multiplatform.msa_core.feature.transactionStatus.data.models.enums.TrxEntryMode
 import com.theminesec.multiplatform.msa_core.util.extentions.DataTimeHelper
 import com.minesec.msav3opensource.ui.helper.template.FilterTransactionBottomSheet
-import com.minesec.msav3opensource.ui.helper.template.OnGridPagination
+import com.minesec.msav3opensource.ui.template.OnGridPagination
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.minesec.msav3opensource.R
 

@@ -24,16 +24,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.minesec.msav3opensource.ui.theme.MsaTheme
-import com.theminesec.multiplatform.msa_core.feature.cardTapping.paymentSelectionScreen.presentation.PaymentSelectionAction
-import com.theminesec.multiplatform.msa_core.feature.cardTapping.paymentSelectionScreen.presentation.PaymentSelectionState
+import com.theminesec.multiplatform.msa_core.feature.cardTapping.paymentSelectionScreen.presentation.PaymentQRSelectionAction
+import com.theminesec.multiplatform.msa_core.feature.cardTapping.paymentSelectionScreen.presentation.PaymentQRSelectionState
 import io.github.alexzhirkevich.qrose.QrCodePainter
 
 
 @Composable
 fun PaymentQRSelectionScreen(
-    state: PaymentSelectionState, triggerAction: (PaymentSelectionAction) -> Unit
+    state: PaymentQRSelectionState, triggerAction: (PaymentQRSelectionAction) -> Unit
 ) = MsaUiStateHandler(state.isLoading, state.errorState) {
     Column(
         modifier = Modifier
@@ -50,7 +50,7 @@ fun PaymentQRSelectionScreen(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = state.paymentSelectionArg?.deviceInfo?.mchName ?: "",
+                text = state.deviceInfo?.mchName ?: "",
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 color = Color.Black
@@ -66,7 +66,7 @@ fun PaymentQRSelectionScreen(
 
         // Amount
         Text(
-            text = state.paymentSelectionArg?.amount ?: "",
+            text = state.amount,
             fontSize = 32.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Black
@@ -76,7 +76,7 @@ fun PaymentQRSelectionScreen(
 
         // Payment method (GrabPay logo or text)
         Text(
-            text = state.paymentSelectionArg?.deviceInfo?.mchName ?: "",
+            text = state.deviceInfo?.mchName ?: "",
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
             color = Color(0xFF00AA00)

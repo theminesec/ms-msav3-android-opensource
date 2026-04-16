@@ -23,14 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.theminesec.multiplatform.msa_core.feature.landing.presentation.LandingAction
 import com.theminesec.multiplatform.msa_core.feature.landing.presentation.LandingState
 
 
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.minesec.msav3opensource.R
-import com.minesec.msav3opensource.ui.helper.template.AuthProgressBar
+import com.minesec.msav3opensource.ui.template.AuthProgressBar
 
 
 @Composable

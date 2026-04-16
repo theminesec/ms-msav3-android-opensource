@@ -1,0 +1,28 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Circle background - amber/orange -->
+    <path
+        android:fillColor="#F59E0B"
+        android:pathData="M32,0C49.67,0 64,14.33 64,32C64,49.67 49.67,64 32,64C14.33,64 0,49.67 0,32C0,14.33 14.33,0 32,0Z"/>
+    <!-- Clock face - white -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M32,12C42.04,12 50,19.96 50,30C50,40.04 42.04,48 32,48C21.96,48 14,40.04 14,30C14,19.96 21.96,12 32,12ZM32,16C24.27,16 18,22.27 18,30C18,37.73 24.27,44 32,44C39.73,44 46,37.73 46,30C46,22.27 39.73,16 32,16Z"/>
+    <!-- Clock hands - white -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M31,20L33,20L33,31L40,31L40,33L31,33Z"/>
+    <!-- Processing text dots area -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M22,54C22,52.9 22.9,52 24,52C25.1,52 26,52.9 26,54C26,55.1 25.1,56 24,56C22.9,56 22,55.1 22,54Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M30,54C30,52.9 30.9,52 32,52C33.1,52 34,52.9 34,54C34,55.1 33.1,56 32,56C30.9,56 30,55.1 30,54Z"/>
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M38,54C38,52.9 38.9,52 40,52C41.1,52 42,52.9 42,54C42,55.1 41.1,56 40,56C38.9,56 38,55.1 38,54Z"/>
+</vector>

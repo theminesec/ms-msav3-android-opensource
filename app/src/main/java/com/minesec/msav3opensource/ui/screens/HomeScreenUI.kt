@@ -33,9 +33,9 @@ import com.minesec.msav3opensource.ui.helper.items.MSACard
 import com.minesec.msav3opensource.ui.helper.template.MSABottomBar
 import com.minesec.msav3opensource.ui.models.BottomNavTab
 import com.minesec.msav3opensource.ui.models.CardTab
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
-import com.minesec.msav3opensource.ui.helper.template.PasscodeDialog
-import com.minesec.msav3opensource.ui.helper.template.TransactionAuthCardVoidDialog
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.PasscodeDialog
+import com.minesec.msav3opensource.ui.template.TransactionAuthCardVoidDialog
 import com.theminesec.multiplatform.msa_core.feature.home.presentation.HomeAction
 import com.theminesec.multiplatform.msa_core.feature.home.presentation.HomeState
 import com.minesec.msav3opensource.ui.theme.MsaTheme

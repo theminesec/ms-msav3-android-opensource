@@ -47,11 +47,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.minesec.msav3opensource.R
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
-import com.minesec.msav3opensource.ui.helper.template.ReceiptNfcDialog
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.ReceiptNfcDialog
 import com.minesec.msav3opensource.ui.helper.utils.shareImage
 import com.minesec.msav3opensource.ui.theme.MsaTheme
-import com.theminesec.multiplatform.msa.template.TicketShapeVertically
+import com.minesec.msav3opensource.ui.template.TicketShapeVertically
 import com.theminesec.multiplatform.msa_core.feature.receiptScreen.domain.models.MerchantReceiptData
 import com.theminesec.multiplatform.msa_core.feature.receiptScreen.presentation.ReceiptAction
 import com.theminesec.multiplatform.msa_core.feature.receiptScreen.presentation.ReceiptState

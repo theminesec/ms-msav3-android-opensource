@@ -17,6 +17,7 @@ fun TextUnit.adaptive(): TextUnit {
         WindowWidthSize.Compact -> this
         WindowWidthSize.Medium -> this * 1.2f
         WindowWidthSize.Expanded -> this * 1.4f
+        else -> this
     }
 }
 
@@ -28,6 +29,7 @@ fun adaptiveSpacingHeight(baseSpacing: Dp): Dp {
         WindowHeightSize.Compact -> baseSpacing
         WindowHeightSize.Medium -> baseSpacing
         WindowHeightSize.Expanded -> baseSpacing * 1.2f
+        else -> baseSpacing
     }
 }
 
@@ -38,6 +40,7 @@ fun adaptiveFontSizeHeight(baseFontSize: TextUnit): TextUnit {
         WindowHeightSize.Compact -> baseFontSize
         WindowHeightSize.Medium -> baseFontSize
         WindowHeightSize.Expanded -> baseFontSize * 1.2f
+        else -> baseFontSize
     }
 }
 
@@ -48,6 +51,7 @@ fun adaptiveIconSizeHeight(baseIconSize: Dp): Dp {
         WindowHeightSize.Compact -> baseIconSize
         WindowHeightSize.Medium -> baseIconSize
         WindowHeightSize.Expanded -> baseIconSize * 1.2f
+        else -> baseIconSize
     }
 }
 
@@ -59,6 +63,7 @@ fun adaptiveAmountHeight(baseSpacing: Dp): Dp {
         WindowWidthSize.Compact -> baseSpacing * 0.9f
         WindowWidthSize.Medium -> baseSpacing * 1.4f
         WindowWidthSize.Expanded -> baseSpacing * 2f
+        else -> baseSpacing
     }
 }
 
@@ -88,6 +93,7 @@ fun rememberAdaptiveTranDetailFontSize(displayAmount: String): TextUnit {
                     else -> 56.sp
                 }
             }
+            else -> 24.sp
         }
     }
 }
@@ -118,6 +124,7 @@ fun rememberAwaitCardScreenAmountFontSize(displayAmount: String): TextUnit {
                     else -> 56.sp
                 }
             }
+            else -> 24.sp
         }
     }
 }
@@ -147,6 +154,7 @@ fun rememberPOSScreenAmountFontSize(displayAmount: String): TextUnit {
                     else -> 44.sp
                 }
             }
+            else -> 24.sp
         }
     }
 }

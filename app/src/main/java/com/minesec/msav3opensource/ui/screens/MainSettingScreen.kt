@@ -37,8 +37,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import com.minesec.msav3opensource.R
 import com.minesec.msav3opensource.ui.helper.items.LogoutConfirmationDialog
-import com.minesec.msav3opensource.ui.helper.template.FeatureUnavailableDialog
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.FeatureUnavailableDialog
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.minesec.msav3opensource.ui.helper.template.SettingsItem
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.feature.settings.presenation.SettingsAction

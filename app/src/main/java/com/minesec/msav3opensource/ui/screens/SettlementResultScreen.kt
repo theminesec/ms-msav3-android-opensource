@@ -39,7 +39,7 @@ import com.minesec.msav3opensource.ui.helper.items.BatchSummaryCard
 import com.minesec.msav3opensource.ui.helper.items.MSAButton
 import com.minesec.msav3opensource.ui.helper.items.MSAButtonStyle
 import com.minesec.msav3opensource.ui.helper.items.MSATextFieldDialog
-import com.minesec.msav3opensource.ui.helper.template.MsaUiStateHandler
+import com.minesec.msav3opensource.ui.template.MsaUiStateHandler
 import com.minesec.msav3opensource.ui.theme.MsaTheme
 import com.theminesec.multiplatform.msa_core.feature.common.domain.models.enums.SettleStatus
 import com.theminesec.multiplatform.msa_core.feature.common.domain.models.enums.SettleStatus.CREATED
